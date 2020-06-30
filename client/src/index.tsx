@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import * as dotenv from 'dotenv';
 
 import configureStore from './Store';
 import { Provider } from 'react-redux';
 
 import App from './App';
+
+// dotenv.config();
 
 const store = configureStore();
 
