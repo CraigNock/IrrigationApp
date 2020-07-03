@@ -6,8 +6,6 @@ const PORT = process.env.PORT || 4000;
 
 const app : express.Application = express()
 
-
-
 app.use(express.json());
 
 app.use(cors())
