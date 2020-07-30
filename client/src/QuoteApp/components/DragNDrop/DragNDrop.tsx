@@ -21,7 +21,7 @@ interface stringObj {
 interface props {
   // ref?: React.MutableRefObject<null>
   dropZone: DOMRect | null,
-  style?: stringObj,
+  style?: React.CSSProperties,
   src: string
 };
 
@@ -30,9 +30,9 @@ interface props {
 // using transform: translate(Xpx, Ypx), means that the component
 // will move, but in RELATION to the starting point.
 // const DragNDrop : React.FC<PropsWithChildren<props>> = React.forwardRef({children}, ref) => { => { /********************** */
-  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, style, src}) => {
+  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, src}) => {
 
-  // how much the component will move on each drag
+    // how much the component will move on each drag
   const [translateValues, setTranslateValues] = React.useState<Coordinates>({x:0, y:0})
   // all the translations that have happened up to each iteration
   // on mouse up we add up the translations of that current drag
@@ -136,7 +136,7 @@ interface props {
       data-css="dragNdrop"
       ref={thisRef}
     // the movement of the component is by translate
-      style={{ ...style, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
+      style={{ transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
       onMouseDown={(event)=>{
         event.preventDefault();
         event.stopPropagation();
@@ -155,7 +155,7 @@ const Wrapper = styled.div`
   border: 1px blue solid;
   margin: 0px;
   padding: 0px;
-  position: relative;
+  /* position: relative; */
   width: fit-content;
   height: fit-content;
   object-fit:contain;

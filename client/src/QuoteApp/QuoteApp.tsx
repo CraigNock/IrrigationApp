@@ -18,11 +18,12 @@ const QuoteApp : React.FC<props> = () => {
       setDropZone(dragStorageRef.current.getBoundingClientRect())
     }
   },[dragStorageRef])
+
   return (
     <Wrapper>
       QuoteApp
       <DragStorage
-        // ref={dragStorageRef}
+        dragStorageRef={dragStorageRef}
       >
         <ResizeDrag 
           startX={50}
@@ -40,10 +41,11 @@ const QuoteApp : React.FC<props> = () => {
             ResizeDrag
           </DragableContent>
         </ResizeDrag>
+
+        {/* <SprinklerMenu 
+          dropZone={dropZone}
+        /> */}
       </DragStorage>
-      <SprinklerMenu 
-        dropZone={dropZone}
-      />
     </Wrapper>
   )
 }

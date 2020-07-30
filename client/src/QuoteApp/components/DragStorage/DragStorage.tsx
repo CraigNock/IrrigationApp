@@ -2,17 +2,18 @@
 import React, { useEffect, useState, PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import DragNDrop from '../DragNDrop';
+import SprinklerMenu from '../SprinklerMenu';
 // import Popup  from '../SprinklerMenut/assets/sprinkle-svgrepo-com.svg';
 
 interface props {
-
+  dragStorageRef: React.RefObject<HTMLDivElement>,
 }
 
-const DragStorage : React.FC<PropsWithChildren<props>> = ({children}) => {
+const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, children}) => {
 
-  const [sprinklers, setSprinklers] = useState({});
+  const [sprinklers, setSprinklers] = useState<any>({});
 
-  const dragStorageRef = React.useRef<HTMLDivElement>(null);
+  // const dragStorageRef = React.useRef<HTMLDivElement>(null);
   let [dropZone, setDropZone] = React.useState<DOMRect | null>(null);
 
   useEffect(()=>{
@@ -21,30 +22,38 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({children}) => {
     }
   },[dragStorageRef])
 
-  const mouseUpHandle = () => {
+  const onDrag = (testRef : any) => {
     let id = Object.keys(sprinklers).length + 1;
     console.log(id);
     setSprinklers({
       ...sprinklers,
-      [id]: `sprinkler${id}`,
+      [id]: {
+        top: testRef?.current?.getBoundingClientRect().top,
+        left: testRef?.current?.getBoundingClientRect().left,
+      },
     })
   }
+
+  useEffect(()=>{
+    console.log('sprinklers', sprinklers)
+  },[sprinklers])
 
   return (
     <Wrapper 
       ref={dragStorageRef}
-      onMouseUp={(e) => {
-        console.log('storageUp');
-        mouseUpHandle();
-      }}
     >
       {children}
-      {(Object.keys(sprinklers).length)? Object.keys(sprinklers!).map((key:string) => {
+      <SprinklerMenu
+        dropZone={dropZone}
+        onDrag={onDrag}
+      />
+      {(Object.keys(sprinklers).length)? Object.keys(sprinklers).map((key:string) => {
         return (
           <DragNDrop 
             dropZone={dropZone}
             key={key}
-            style={{width:'30px', height:'30px'}}
+            style={{backgroundColor: 'blue'}}
+            // style={{width:'30px', height:'30px', position: 'absolute', top: `${sprinklers[key].top}`, left: `${sprinklers[key].left}`}}
             src={''}
           >
             {key}

@@ -7,9 +7,10 @@ import Popup  from './assets/sprinkle-svgrepo-com.svg';
 
 interface props {
   dropZone: DOMRect | null,
+  onDrag: any,
 };
 
-const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone}) => {
+const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone, onDrag}) => {
   // const arr = [Popup, Popup]
   const testRef = React.useRef<any>(null)
 
@@ -19,18 +20,19 @@ const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone}) => {
   }, [dropZone])
   return (
     <Wrapper ref={testRef}>
-      {/* {arr.map((src, index)=><Sprinkler key={index}>
-        <DragNDrop limit={testRef.current}>
-          <img src={src} onMouseDown={clickHandler} style={{height:'30px'}}/>
-        </DragNDrop>
-      </Sprinkler>)} */}
       <Sprinkler>
-        <DragNDrop dropZone={dropZone}
+        <img 
+          // dropZone={dropZone}
+          ref={testRef}
           style={{width:'30px', height:'30px'}}
           src={Popup}
-        >
+          onMouseDown={(e) => {
+            console.log('storageUp');
+            onDrag(testRef);
+          }}
+        />
           
-        </DragNDrop>
+        {/* </DragNDrop> */}
       </Sprinkler>
       {/* <Sprinkler>
         <DragNDrop
