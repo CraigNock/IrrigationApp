@@ -23,7 +23,7 @@ interface props {
   dropZone: DOMRect | null,
   style?: React.CSSProperties,
   src: string,
-  stylezzz: any,
+  initialCoord: any,
 };
 
 
@@ -31,7 +31,7 @@ interface props {
 // using transform: translate(Xpx, Ypx), means that the component
 // will move, but in RELATION to the starting point.
 // const DragNDrop : React.FC<PropsWithChildren<props>> = React.forwardRef({children}, ref) => { => { /********************** */
-  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, src, stylezzz}) => {
+  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, src, initialCoord}) => {
 
     // how much the component will move on each drag
   const [translateValues, setTranslateValues] = React.useState<Coordinates>({x:0, y:0})
@@ -132,13 +132,13 @@ interface props {
   // console.log('isMousedown', isMouseDown);
   // console.log('canDrop', canDrop)
   // console.log('dropState', dropState)
+
   return (
     <Wrapper
       data-css="dragNdrop"
       ref={thisRef}
     // the movement of the component is by translate
-      // style={stylezzz}
-      style={{...stylezzz, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
+      style={{top: initialCoord.top, left: initialCoord.left, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
       onMouseDown={(event)=>{
         event.preventDefault();
         event.stopPropagation();
@@ -154,11 +154,10 @@ interface props {
 export default DragNDrop;
 
 const Wrapper = styled.div`
-position: relative;
+position: absolute;
   border: 1px blue solid;
   margin: 0px;
   padding: 0px;
-  /* position: relative; */
   width: fit-content;
   height: fit-content;
   object-fit:contain;

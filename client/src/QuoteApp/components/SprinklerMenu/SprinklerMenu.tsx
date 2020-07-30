@@ -55,7 +55,7 @@ const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone, onDrag}) 
 export default SprinklerMenu;
 
 const Wrapper = styled.ul`
-  position:relative;
+  position:absolute;
   list-style-type: none;
   /* border: 1px green solid; */
   width: fit-content;

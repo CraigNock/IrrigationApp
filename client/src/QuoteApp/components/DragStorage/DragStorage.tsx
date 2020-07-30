@@ -54,9 +54,7 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
           <DragNDrop 
             dropZone={dropZone}
             key={key}
-            stylezzz={{border: '5px solid blue'}}
-            // style={{backgroundColor: 'blue'}}
-            // style={{top: `${sprinklers[key].top}`, left: `${sprinklers[key].left}`}}
+            initialCoord={{top: `${sprinklers[key].top}`, left: `${sprinklers[key].left}`}}
             src={''}
           >
             {key}
