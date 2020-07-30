@@ -22,7 +22,8 @@ interface props {
   // ref?: React.MutableRefObject<null>
   dropZone: DOMRect | null,
   style?: React.CSSProperties,
-  src: string
+  src: string,
+  stylezzz: any,
 };
 
 
@@ -30,7 +31,7 @@ interface props {
 // using transform: translate(Xpx, Ypx), means that the component
 // will move, but in RELATION to the starting point.
 // const DragNDrop : React.FC<PropsWithChildren<props>> = React.forwardRef({children}, ref) => { => { /********************** */
-  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, src}) => {
+  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, src, stylezzz}) => {
 
     // how much the component will move on each drag
   const [translateValues, setTranslateValues] = React.useState<Coordinates>({x:0, y:0})
@@ -136,14 +137,15 @@ interface props {
       data-css="dragNdrop"
       ref={thisRef}
     // the movement of the component is by translate
-      style={{ transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
+      // style={stylezzz}
+      style={{...stylezzz, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
       onMouseDown={(event)=>{
         event.preventDefault();
         event.stopPropagation();
         mouseDown(event);
       }}
     >
-      <img src={src || Popup} style={{margin:'0px', padding:'0px'}} alt='spray'/>
+      <img src={src || Popup} style={{width:'30px', height:'30px', margin:'0px', padding:'0px'}} alt='spray'/>
       {children}
     </Wrapper>
   )
@@ -152,6 +154,7 @@ interface props {
 export default DragNDrop;
 
 const Wrapper = styled.div`
+position: relative;
   border: 1px blue solid;
   margin: 0px;
   padding: 0px;

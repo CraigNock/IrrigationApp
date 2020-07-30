@@ -19,11 +19,11 @@ const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone, onDrag}) 
 
   }, [dropZone])
   return (
-    <Wrapper ref={testRef}>
-      <Sprinkler>
+    <Wrapper >
+      <Sprinkler ref={testRef} >
         <img 
           // dropZone={dropZone}
-          ref={testRef}
+          // ref={testRef}
           style={{width:'30px', height:'30px'}}
           src={Popup}
           onMouseDown={(e) => {
@@ -55,6 +55,7 @@ const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone, onDrag}) 
 export default SprinklerMenu;
 
 const Wrapper = styled.ul`
+  position:relative;
   list-style-type: none;
   /* border: 1px green solid; */
   width: fit-content;

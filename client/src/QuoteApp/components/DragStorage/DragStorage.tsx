@@ -38,6 +38,8 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
     console.log('sprinklers', sprinklers)
   },[sprinklers])
 
+  
+
   return (
     <Wrapper 
       ref={dragStorageRef}
@@ -52,8 +54,9 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
           <DragNDrop 
             dropZone={dropZone}
             key={key}
-            style={{backgroundColor: 'blue'}}
-            // style={{width:'30px', height:'30px', position: 'absolute', top: `${sprinklers[key].top}`, left: `${sprinklers[key].left}`}}
+            stylezzz={{border: '5px solid blue'}}
+            // style={{backgroundColor: 'blue'}}
+            // style={{top: `${sprinklers[key].top}`, left: `${sprinklers[key].left}`}}
             src={''}
           >
             {key}
