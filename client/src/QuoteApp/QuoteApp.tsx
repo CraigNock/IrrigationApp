@@ -27,7 +27,7 @@ const QuoteApp : React.FC<props> = () => {
       >
         <ResizeDrag 
           startX={50}
-          startY={50}
+          startY={175}
           startWidth={100}
           startHeight={100}
         />

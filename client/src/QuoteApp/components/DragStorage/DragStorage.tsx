@@ -16,12 +16,22 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
   // const dragStorageRef = React.useRef<HTMLDivElement>(null);
   let [dropZone, setDropZone] = React.useState<DOMRect | null>(null);
 
+  const menuRef = React.useRef<HTMLUListElement>(null);
+  let [menuZone, setMenuZone] = React.useState<DOMRect | null>(null);
+
   useEffect(()=>{
     if(dragStorageRef !== null && dragStorageRef.current !== null){
       setDropZone(dragStorageRef.current.getBoundingClientRect())
     }
   },[dragStorageRef])
 
+  useEffect(()=>{
+    if(menuRef !== null && menuRef.current !== null){
+      setMenuZone(menuRef.current.getBoundingClientRect())
+    }
+  },[menuRef])
+
+//creates a new instance of draggable, positioned based on provided ref
   const onDrag = (testRef : any) => {
     let id = Object.keys(sprinklers).length + 1;
     console.log(id);
@@ -46,6 +56,7 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
     >
       {children}
       <SprinklerMenu
+        menuRef={menuRef}
         dropZone={dropZone}
         onDrag={onDrag}
       />
@@ -53,6 +64,7 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
         return (
           <DragNDrop 
             dropZone={dropZone}
+            menuZone={menuZone}
             key={key}
             initialCoord={{top: `${sprinklers[key].top}`, left: `${sprinklers[key].left}`}}
             src={''}

@@ -6,9 +6,26 @@ import { roundToNum } from '../../../utils';
 import Popup  from '../SprinklerMenu/assets/sprinkle-svgrepo-com.svg';
 
 
-const checkDropZone = (currentLocation : DOMRect | null, dropZone : DOMRect | null) : boolean => {
-  if(!currentLocation || !dropZone) return true
-  if((currentLocation.left >= dropZone.left && currentLocation.right <= dropZone.right) && (currentLocation.top >= dropZone.top && currentLocation.bottom <= dropZone.bottom)){
+const checkOutOfMenuZone = (currentLocation : DOMRect | null, menuZone : DOMRect | null) : boolean => {
+  if(!currentLocation || !menuZone) return true
+  if((currentLocation.right >= menuZone.left 
+    && currentLocation.left <= menuZone.right) 
+    && (currentLocation.bottom >= menuZone.top 
+    && currentLocation.top <= menuZone.bottom)){
+    return false
+  }
+  return true
+}
+
+const checkDropZone = (currentLocation : DOMRect | null, dropZone : DOMRect | null, menuZone : DOMRect | null) : boolean => {
+  if(!currentLocation || !dropZone) return true;
+  // if(!checkOutOfMenuZone(currentLocation, menuZone)) return false;
+  if((currentLocation.left >= dropZone.left 
+    && currentLocation.right <= dropZone.right) 
+    && (currentLocation.top >= dropZone.top 
+    && currentLocation.bottom <= dropZone.bottom)
+    && (checkOutOfMenuZone(currentLocation, menuZone))
+    ){
     return true
   }
   return false
@@ -21,6 +38,7 @@ interface stringObj {
 interface props {
   // ref?: React.MutableRefObject<null>
   dropZone: DOMRect | null,
+  menuZone: DOMRect | null,
   style?: React.CSSProperties,
   src: string,
   initialCoord: any,
@@ -31,7 +49,7 @@ interface props {
 // using transform: translate(Xpx, Ypx), means that the component
 // will move, but in RELATION to the starting point.
 // const DragNDrop : React.FC<PropsWithChildren<props>> = React.forwardRef({children}, ref) => { => { /********************** */
-  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, src, initialCoord}) => {
+  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, menuZone, src, initialCoord}) => {
 
     // how much the component will move on each drag
   const [translateValues, setTranslateValues] = React.useState<Coordinates>({x:0, y:0})
@@ -83,11 +101,11 @@ interface props {
     if(thisRef !==null && thisRef.current !== null) {
       thisRect = thisRef.current.getBoundingClientRect();
     }
-    setCanDrop(checkDropZone(thisRect ,dropZone))
+    setCanDrop(checkDropZone(thisRect, dropZone, menuZone))
     // eslint-disable-next-line
   }, [translateValues, translateUpToNow, dropZone])
 
-  // checking weather or not the item is currently in an area
+  // checking wether or not the item is currently in an area
   // it can be dropped at
   React.useEffect(()=>{
     if(isMouseDown){
@@ -132,7 +150,7 @@ interface props {
   // console.log('isMousedown', isMouseDown);
   // console.log('canDrop', canDrop)
   // console.log('dropState', dropState)
-  console.log('initialCoord', initialCoord.top);
+  // console.log('initialCoord', initialCoord.top);
   return (
     <Wrapper
       data-css="dragNdrop"
@@ -154,13 +172,13 @@ interface props {
 export default DragNDrop;
 
 const Wrapper = styled.div`
-position: absolute;
-  border: 1px blue solid;
+  position: absolute;
   margin: 0px;
   padding: 0px;
   width: fit-content;
   height: fit-content;
   object-fit:contain;
+  /* border: 1px blue solid; */
 
   &:hover{
     cursor: grab;
