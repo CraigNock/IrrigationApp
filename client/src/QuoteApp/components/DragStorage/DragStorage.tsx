@@ -67,10 +67,11 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
 }
 
 const Wrapper = styled.div`
-  position: relative;
+  /* position: relative; */
   width: 500px;
   height: 500px;
   border: 1px solid red;
+  background: green;
 `;
 
 export default DragStorage;

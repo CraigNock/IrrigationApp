@@ -186,7 +186,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   border: 1px red solid;
-  /* background: skyblue; */
+  background: gray;
   position: absolute;
 
   /* scroll bar stuff */

@@ -60,8 +60,9 @@ const Wrapper = styled.ul`
   /* border: 1px green solid; */
   width: fit-content;
   height: fit-content;
-  padding: 0;
+  padding: 1rem;
   margin: 0;
+  background: skyblue;
 `;
 
 const Sprinkler = styled.li`

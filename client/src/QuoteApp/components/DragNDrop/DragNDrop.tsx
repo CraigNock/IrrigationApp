@@ -132,13 +132,13 @@ interface props {
   // console.log('isMousedown', isMouseDown);
   // console.log('canDrop', canDrop)
   // console.log('dropState', dropState)
-
+  console.log('initialCoord', initialCoord.top);
   return (
     <Wrapper
       data-css="dragNdrop"
       ref={thisRef}
     // the movement of the component is by translate
-      style={{top: initialCoord.top, left: initialCoord.left, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
+      style={{top: `${initialCoord.top}px`, left: `${initialCoord.left}px`, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
       onMouseDown={(event)=>{
         event.preventDefault();
         event.stopPropagation();
