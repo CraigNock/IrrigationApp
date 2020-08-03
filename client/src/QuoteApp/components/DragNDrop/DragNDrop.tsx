@@ -1,10 +1,9 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import styled from 'styled-components';
 import { Coordinates } from './interfaces';
 import { COLORS, DRAGSNAP } from '../../../constants';
 import { roundToNum } from '../../../utils';
 import Popup  from '../SprinklerMenu/assets/sprinkle-svgrepo-com.svg';
-
 
 const checkOutOfMenuZone = (currentLocation : DOMRect | null, menuZone : DOMRect | null) : boolean => {
   if(!currentLocation || !menuZone) return true
@@ -47,7 +46,9 @@ interface props {
   menuZone: DOMRect | null,
   style?: React.CSSProperties,
   src: string,
-  initialCoord: any,
+  initialCoord: Coordinates,
+  dragging : boolean,
+  mouseCoords : Coordinates,
 };
 
 
@@ -55,7 +56,7 @@ interface props {
 // using transform: translate(Xpx, Ypx), means that the component
 // will move, but in RELATION to the starting point.
 // const DragNDrop : React.FC<PropsWithChildren<props>> = React.forwardRef({children}, ref) => { => { /********************** */
-  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, menuZone, src, initialCoord}) => {
+  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, menuZone, src, initialCoord, dragging = false, mouseCoords}) => {
 
     // how much the component will move on each drag
   const [translateValues, setTranslateValues] = React.useState<Coordinates>({x:0, y:0})
@@ -63,7 +64,7 @@ interface props {
   // on mouse up we add up the translations of that current drag
   const [translateUpToNow, setTranslateUpToNow] = React.useState<Coordinates>({x:0, y:0})
   // where the mouse is
-  const [mouseCoordinates, setMouseCoordinates] = React.useState<Coordinates>({x:0, y:0})
+  const [mouseCoordinates, setMouseCoordinates] = React.useState<Coordinates>(mouseCoords)
   // flag to know if the mouse has been clicked
   const [isMouseDown, setIsMouseDown] = React.useState<boolean>(false);
   
@@ -73,8 +74,29 @@ interface props {
 
   const thisRef = React.useRef<HTMLDivElement | null>(null);
   
+  useEffect(() => {
+    // console.log('effect DnD')
+    const setMouseMove = (e : any) => {
+      console.log('cursorX', e.clientX)
+      console.log('cursorY', e.clientY)
+    
+      mouseDown(e)
+      window.removeEventListener('mousemove', setMouseMove)
+    }
+    if(dragging) {
+      setIsMouseDown(true)
+      // window.addEventListener('mousemove', setMouseMove)
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', setMouseMove)
+    }
+  }, [])
+
   // setting the position of everything for the start of the drag
   const mouseDown = React.useCallback(({clientX, clientY}) : void => {
+    // console.log('clientY - mouseDown', clientY)
+    // console.log('clientX - mouseDown', clientX)
     setTranslateUpToNow({
       x: translateValues.x,
       y: translateValues.y
@@ -93,7 +115,8 @@ interface props {
     if(isMouseDown){
       // each coordinate is set to be the value of the start of drag
       // plus the sum of the movement of the mouse in relation to where it was clicked
-      setTranslateValues({
+    console.log('clientX - mouseMove', mouseCoordinates.x)
+    setTranslateValues({
         x: roundToNum(translateUpToNow.x + (clientX - mouseCoordinates.x), DRAGSNAP),
         y: roundToNum(translateUpToNow.y + (clientY - mouseCoordinates.y), DRAGSNAP)  
       })
@@ -128,6 +151,7 @@ interface props {
 
   // when the mouse is up, set flag to false 
   const mouseUp = React.useCallback((): void => {
+    console.log('mouseUp')
     setIsMouseDown(false)
     if(!canDrop){
       setTranslateValues({
@@ -144,6 +168,7 @@ interface props {
 
   // on click we start a new listener
   React.useEffect(()=>{
+    console.log('isMouseDown', canDrop)
     window.addEventListener('mousemove', mouseMove)
     window.addEventListener('mouseup', mouseUp)
 
@@ -162,14 +187,15 @@ interface props {
       data-css="dragNdrop"
       ref={thisRef}
     // the movement of the component is by translate
-      style={{top: `${initialCoord.top}px`, left: `${initialCoord.left}px`, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
+      style={{top: `${initialCoord.x}px`, left: `${initialCoord.y}px`, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
       onMouseDown={(event)=>{
         event.preventDefault();
         event.stopPropagation();
+        console.log('DOM')
         mouseDown(event);
       }}
     >
-      <img src={src || Popup} style={{width:'30px', height:'30px', margin:'0px', padding:'0px'}} alt='spray'/>
+      <img src={src || Popup} draggable="false" style={{width:'30px', height:'30px', margin:'0px', padding:'0px'}} alt='spray'/>
       {children}
     </Wrapper>
   )

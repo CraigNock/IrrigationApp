@@ -21,9 +21,9 @@ const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone, menuRef, 
   }, [dropZone])
 
 //creates initial draggable on mount
-  React.useEffect(()=>{
-    onDrag(sprinklerRef);
-  }, [])
+  // React.useEffect(()=>{
+  //   onDrag(sprinklerRef);
+  // }, [])
 
   //onmouseleave if mousedown onDrag(sprinklerRef)   ??to create new draggable when moving intial??
 //or just let mousedown pass through when in menu
@@ -38,12 +38,13 @@ const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone, menuRef, 
     <Wrapper ref={menuRef} >
       <Sprinkler  >
         <img 
+          draggable="false"
           ref={sprinklerRef}
           style={{width:'30px', height:'30px'}}
           src={Popup}
           onMouseDown={(e) => {
             console.log('storageUp');
-            onDrag(sprinklerRef);
+            onDrag(sprinklerRef, e);
           }}
         />
       </Sprinkler>

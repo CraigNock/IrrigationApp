@@ -32,7 +32,7 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
   },[menuRef])
 
 //creates a new instance of draggable, positioned based on provided ref
-  const onDrag = (testRef : any) => {
+  const onDrag = (testRef : any, e : any) => {
     let id = Object.keys(sprinklers).length + 1;
     console.log(id);
     setSprinklers({
@@ -40,6 +40,9 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
       [id]: {
         top: testRef?.current?.getBoundingClientRect().top,
         left: testRef?.current?.getBoundingClientRect().left,
+        mouseCoords: {
+          x: e.clientX, 
+          y: e.clientY}
       },
     })
   }
@@ -66,8 +69,10 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
             dropZone={dropZone}
             menuZone={menuZone}
             key={key}
-            initialCoord={{top: `${sprinklers[key].top}`, left: `${sprinklers[key].left}`}}
+            initialCoord={{x: sprinklers[key].top, y: sprinklers[key].left}}
+            mouseCoords={sprinklers[key].mouseCoords}
             src={''}
+            dragging={true}
           >
             {key}
           </DragNDrop>
