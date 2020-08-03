@@ -23,7 +23,7 @@ export const checkEveryZone = ( currentLocation : DOMRect | null, dropZonesArray
  * @param dropZone { DOMRect } the DOM Rect that represent the drop zones
  * @return { boolean } 
  */
-export const  checkIfInZone = (currentLocation : DOMRect, dropZone : DOMRect) => {
+export const checkIfInZone = (currentLocation : DOMRect, dropZone : DOMRect) => {
   if((currentLocation.left >= dropZone.left 
     && currentLocation.right <= dropZone.right) 
     && (currentLocation.top >= dropZone.top 
