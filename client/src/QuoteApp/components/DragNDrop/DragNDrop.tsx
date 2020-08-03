@@ -16,7 +16,13 @@ const checkOutOfMenuZone = (currentLocation : DOMRect | null, menuZone : DOMRect
   }
   return true
 }
-
+/**
+ * @description check if we can drop the item in this current position
+ * @param currentLocation {DOMRect} all the information of the current location of the dragged item
+ * @param dropZone {DOMRect} 
+ * @param menuZone {DOMRect}
+ * @return {boolean} True - can drop, False - Can't drop
+ */
 const checkDropZone = (currentLocation : DOMRect | null, dropZone : DOMRect | null, menuZone : DOMRect | null) : boolean => {
   if(!currentLocation || !dropZone) return true;
   // if(!checkOutOfMenuZone(currentLocation, menuZone)) return false;
@@ -66,7 +72,7 @@ interface props {
   const [dropState, setDropState] = React.useState<boolean>(true)
 
   const thisRef = React.useRef<HTMLDivElement | null>(null);
-
+  
   // setting the position of everything for the start of the drag
   const mouseDown = React.useCallback(({clientX, clientY}) : void => {
     setTranslateUpToNow({
