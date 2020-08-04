@@ -34,7 +34,7 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
 //creates a new instance of draggable, positioned based on provided ref
   const onDrag = (testRef : any, e : any) => {
     let id = (new Date()).getTime().toString();
-    console.log(id);
+    console.log('testRef?.src', testRef?.current?.src)
     setSprinklers({
       ...sprinklers,
       [id]: {
@@ -42,14 +42,12 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
         left: testRef?.current?.getBoundingClientRect().left,
         mouseCoords: {
           x: e.clientX, 
-          y: e.clientY}
+          y: e.clientY,
+        },
+        src: testRef?.current?.src
       },
     })
   }
-
-  useEffect(()=>{
-    console.log('sprinklers', sprinklers)
-  },[sprinklers])
 
   const deleteSelf = (id: number) => {
     const newSprinklers = {...sprinklers}
@@ -77,7 +75,7 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
             key={id}
             initialCoord={{x: sprinklers[id].top, y: sprinklers[id].left}}
             mouseCoords={sprinklers[id].mouseCoords}
-            src={''}
+            imgSrc={sprinklers[id].src}
             dragging={true}
             id={id}
             deleteSelf={deleteSelf}

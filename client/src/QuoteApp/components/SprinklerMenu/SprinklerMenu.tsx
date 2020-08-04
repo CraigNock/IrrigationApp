@@ -84,4 +84,7 @@ const Sprinkler = styled.li`
   padding: 1rem;
   border: 1px green solid;
   box-sizing: border-box;
+  &:hover {
+    cursor: grab;
+  }
 `;

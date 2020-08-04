@@ -45,13 +45,12 @@ interface props {
   dropZone: DOMRect | null,
   menuZone: DOMRect | null,
   style?: React.CSSProperties,
-  src: string,
+  imgSrc: string,
   initialCoord: Coordinates,
   dragging : boolean,
   mouseCoords : Coordinates,
   id: string,
   deleteSelf: any,
-
 };
 
 
@@ -59,7 +58,7 @@ interface props {
 // using transform: translate(Xpx, Ypx), means that the component
 // will move, but in RELATION to the starting point.
 // const DragNDrop : React.FC<PropsWithChildren<props>> = React.forwardRef({children}, ref) => { => { /********************** */
-  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, menuZone, src, initialCoord, dragging = false, mouseCoords, id, deleteSelf}) => {
+  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, menuZone, imgSrc, initialCoord, dragging = false, mouseCoords, id, deleteSelf}) => {
 
     // how much the component will move on each drag
   const [translateValues, setTranslateValues] = React.useState<Coordinates>({x:0, y:0})
@@ -78,28 +77,13 @@ interface props {
   const thisRef = React.useRef<HTMLDivElement | null>(null);
   
   useEffect(() => {
-    // console.log('effect DnD')
-    const setMouseMove = (e : any) => {
-      console.log('cursorX', e.clientX)
-      console.log('cursorY', e.clientY)
-    
-      mouseDown(e)
-      window.removeEventListener('mousemove', setMouseMove)
-    }
     if(dragging) {
       setIsMouseDown(true)
-      // window.addEventListener('mousemove', setMouseMove)
-    }
-
-    return () => {
-      window.removeEventListener('mousemove', setMouseMove)
     }
   }, [])
 
   // setting the position of everything for the start of the drag
   const mouseDown = React.useCallback(({clientX, clientY}) : void => {
-    // console.log('clientY - mouseDown', clientY)
-    // console.log('clientX - mouseDown', clientX)
     setTranslateUpToNow({
       x: translateValues.x,
       y: translateValues.y
@@ -157,8 +141,9 @@ interface props {
     console.log('mouseUp')
     setIsMouseDown(false)
     if(canDrop){
-
+      // do we need anything here?
     } else {
+      // this can be in the reducer
       deleteSelf(id);
     }
     // eslint-disable-next-line
@@ -166,7 +151,6 @@ interface props {
 
   // on click we start a new listener
   React.useEffect(()=>{
-    console.log('isMouseDown', canDrop)
     window.addEventListener('mousemove', mouseMove)
     window.addEventListener('mouseup', mouseUp)
 
@@ -176,16 +160,13 @@ interface props {
     }
     // eslint-disable-next-line
   },[isMouseDown, mouseUp, canDrop])
-  // console.log('isMousedown', isMouseDown);
-  // console.log('canDrop', canDrop)
-  // console.log('dropState', dropState)
-  // console.log('initialCoord', initialCoord.top);
+  console.log('imgSrc in D', imgSrc)
   return (
     <Wrapper
       data-css="dragNdrop"
       ref={thisRef}
     // the movement of the component is by translate
-      style={{top: `${initialCoord.x}px`, left: `${initialCoord.y}px`, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
+      style={{top: `${initialCoord.x}px`, left: `${initialCoord.y}px`, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON, cursor: isMouseDown ? 'grabbing' : 'grab'}}
       onMouseDown={(event)=>{
         event.preventDefault();
         event.stopPropagation();
@@ -193,7 +174,7 @@ interface props {
         mouseDown(event);
       }}
     >
-      <img src={src || Popup} draggable="false" style={{width:'30px', height:'30px', margin:'0px', padding:'0px'}} alt='spray'/>
+      <img src={imgSrc} draggable="false" style={{width:'30px', height:'30px', margin:'0px', padding:'0px'}} alt='spray'/>
       {children}
     </Wrapper>
   )
@@ -208,16 +189,11 @@ const Wrapper = styled.div`
   width: fit-content;
   height: fit-content;
   object-fit:contain;
-  /* border: 1px blue solid; */
 
-  &:hover{
+  /* &:hover{
     cursor: grab;
-  }
-  &:active{
+  } */
+  /* &:active{
     cursor: grabbing;
-  }
-  /* img{
-    border: 1px solid orange;
-    margin: 0;
   } */
 `;
