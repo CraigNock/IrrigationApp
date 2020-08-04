@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import DragNDrop from '../DragNDrop';
 import Popup  from './assets/sprinkle-svgrepo-com.svg';
 // import { ReactComponent as Popup } from './assets/sprinkle-svgrepo-com.svg';
-// import { ReactComponent as Rotter } from './assets/sprinkler.svg';
+// import { ReactComponent as Rotor } from './assets/sprinkler.svg';
 
 interface props {
   menuRef: React.RefObject<HTMLUListElement>,
