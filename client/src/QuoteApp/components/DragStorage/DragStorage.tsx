@@ -33,7 +33,7 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
 
 //creates a new instance of draggable, positioned based on provided ref
   const onDrag = (testRef : any, e : any) => {
-    let id = Object.keys(sprinklers).length + 1;
+    let id = (new Date()).getTime().toString();
     console.log(id);
     setSprinklers({
       ...sprinklers,
@@ -51,7 +51,13 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
     console.log('sprinklers', sprinklers)
   },[sprinklers])
 
-  
+  const deleteSelf = (id: number) => {
+    const newSprinklers = {...sprinklers}
+    delete newSprinklers[id];
+    setSprinklers({
+      ...newSprinklers,
+    })
+  }
 
   return (
     <Wrapper 
@@ -63,18 +69,19 @@ const DragStorage : React.FC<PropsWithChildren<props>> = ({dragStorageRef, child
         dropZone={dropZone}
         onDrag={onDrag}
       />
-      {(Object.keys(sprinklers).length)? Object.keys(sprinklers).map((key:string) => {
+      {(Object.keys(sprinklers).length)? Object.keys(sprinklers).map((id:string) => {
         return (
           <DragNDrop 
             dropZone={dropZone}
             menuZone={menuZone}
-            key={key}
-            initialCoord={{x: sprinklers[key].top, y: sprinklers[key].left}}
-            mouseCoords={sprinklers[key].mouseCoords}
+            key={id}
+            initialCoord={{x: sprinklers[id].top, y: sprinklers[id].left}}
+            mouseCoords={sprinklers[id].mouseCoords}
             src={''}
             dragging={true}
+            id={id}
+            deleteSelf={deleteSelf}
           >
-            {key}
           </DragNDrop>
           
         )

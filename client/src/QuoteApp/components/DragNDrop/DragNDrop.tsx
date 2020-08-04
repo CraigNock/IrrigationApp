@@ -49,6 +49,9 @@ interface props {
   initialCoord: Coordinates,
   dragging : boolean,
   mouseCoords : Coordinates,
+  id: string,
+  deleteSelf: any,
+
 };
 
 
@@ -56,7 +59,7 @@ interface props {
 // using transform: translate(Xpx, Ypx), means that the component
 // will move, but in RELATION to the starting point.
 // const DragNDrop : React.FC<PropsWithChildren<props>> = React.forwardRef({children}, ref) => { => { /********************** */
-  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, menuZone, src, initialCoord, dragging = false, mouseCoords}) => {
+  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, menuZone, src, initialCoord, dragging = false, mouseCoords, id, deleteSelf}) => {
 
     // how much the component will move on each drag
   const [translateValues, setTranslateValues] = React.useState<Coordinates>({x:0, y:0})
@@ -153,15 +156,10 @@ interface props {
   const mouseUp = React.useCallback((): void => {
     console.log('mouseUp')
     setIsMouseDown(false)
-    if(!canDrop){
-      setTranslateValues({
-        x:0,
-        y:0
-      })
-      setTranslateUpToNow({
-        y:0,
-        x:0,
-      })
+    if(canDrop){
+
+    } else {
+      deleteSelf(id);
     }
     // eslint-disable-next-line
   }, [isMouseDown, canDrop])
